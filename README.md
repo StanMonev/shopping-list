@@ -1,46 +1,42 @@
-# Shopping List
+# Shopping‑List
 
-A lightweight web application that lets you **view, add, edit and delete** items on a personal shopping list.
+A lightweight Spring Boot CRUD app for managing your personal shopping list.
+
+---
 
 ## Prerequisites
 
 * **Java 21**
 * **Gradle 8+** (wrapper included)
-* **Docker** *(optional – for containerised run)*
+* **Docker Desktop** (optional, for running everything in containers)
 
+---
 
-## Getting Started
+## How to run
 
-### 1. Run locally with Gradle
+### 1 · Prepare configuration
 
-```bash
-# Clone the repo
-$ git clone https://github.com/StanMonev/shopping-list.git
-$ cd shopping‑list
+1. Copy **`.env.example` → `.env`** and adjust the variables to your liking.
+2. Copy **`application-example.properties` → `application-local.properties`** if you plan to run the app directly from Gradle.
 
-# Launch the application
-$ ./gradlew bootRun
-```
-
-The server starts on **[http://localhost:8080](http://localhost:8080)**. Open your browser to manage your list.
-
-### 2. Run in Docker
+### 2 · Run with Gradle (local profile)
 
 ```bash
-# Build the image
-$ docker build -t shopping-list .
-
-# Start a container (maps port 8080)
-$ docker run --rm -p 8080:8080 shopping-list
+./gradlew bootRun --args='--spring.profiles.active=local'
 ```
 
-Stop the container with **Ctrl‑C**.
+### 3 · Run with Docker Compose
 
+```bash
+docker compose up --build
+```
 
-## Running Tests
+That’s it—open your browser and start adding items to the list.
+
+---
+
+## Tests
 
 ```bash
 ./gradlew test
 ```
-
-Automated tests cover the main features to make sure everything works as expected.

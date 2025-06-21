@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB:       ${DOCKER_DB_NAME}
+      POSTGRES_USER:     ${DOCKER_DB_USER}
+      POSTGRES_PASSWORD: ${DOCKER_DB_PASS}
+      PGPORT:            ${DOCKER_DB_PORT}
+    ports:
+      - ${DOCKER_DB_PORT}:${DOCKER_DB_PORT}      # hostPort : containerPort
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DOCKER_DB_USER}"]
+      interval: 10s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  spring-app:
+    build:
+      dockerfile: Dockerfile
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:${DOCKER_DB_PORT}/${DOCKER_DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DOCKER_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DOCKER_DB_PASS}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: "true"
+      SPRING_SQL_INIT_MODE: ${INSERT_DB_DATA}
+      SPRING_PROFILES_ACTIVE: local
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:
