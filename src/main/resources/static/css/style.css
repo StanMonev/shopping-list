@@ -1,0 +1,148 @@
+:root{
+    --bg:#f2f4f5;
+
+    --green:#10b981;
+    --green-dim:#059669;
+
+    --red:#ef4444;
+    --yellow:#facc15;
+
+    --text: #1e851e;
+
+    --card-radius:14px;
+    --card-shadow:0 2px 4px rgba(0,0,0,.06);
+}
+
+/* ── base ────────────────────────────────────────────────────── */
+html,body{margin:0;height:100%}
+body{
+    font-family:system-ui,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.45;
+}
+
+.wrapper{max-width:40rem;margin:4rem auto;padding:0 1rem;}
+h1{text-align:center;margin-bottom:3rem;font-size:2rem;font-weight:700}
+
+/* ── generic round button ────────────────────────────────────── */
+.btn-circle{
+    width:28px;height:28px;border:2px solid var(--text);border-radius:50%;
+    display:grid;place-content:center;background:transparent;
+    font:inherit;font-size:.9rem;font-weight:bold;line-height:1;cursor:pointer;
+    transition:background .15s,color .15s;color: var(--text);
+}
+
+
+.btn-circle.green   {border:2px solid var(--green-dim); color: var(--green-dim)}
+.btn-circle.red     {border:2px solid var(--red); color: var(--red)}
+.btn-circle.yellow  {border:2px solid var(--yellow); color: var(--yellow)}
+
+.btn-circle.green:hover  {background:var(--green-dim);  color: #fff}
+.btn-circle.red:hover    {background:var(--red);        color: #fff}
+.btn-circle.yellow:hover {background:var(--yellow);     color: #fff}
+
+/* ── stack layout ────────────────────────────────────────────── */
+.note-stack{display:flex;flex-direction:column;gap:1.2rem}
+
+/* ── card container ──────────────────────────────────────────── */
+.card{
+    position:relative;overflow:hidden;
+    display:flex;align-items:center;
+    border:2px solid var(--green);border-radius:var(--card-radius);
+    background:#fff;box-shadow:var(--card-shadow);
+    transition:transform .15s;padding: 30px; z-index: 10;
+}
+.card:hover{transform:translateY(-3px)}
+
+/* --------------------------- normal view ---------------------- */
+.note-text{
+    position:absolute;left:50%;transform:translateX(-50%);
+    width:calc(100% - 150px);
+    text-align:center;font-size:xx-large;font-weight:700;display:flex;justify-content:center;
+    gap:.4rem;
+}
+/* action buttons clustered right */
+.actions{
+    position:absolute;right:8px;top:50%;transform:translateY(-50%);
+    display:flex;gap:.25rem;opacity:0;transition:opacity .15s;
+}
+.card:hover .actions{opacity:1}
+
+/* strike-through (only over note-text) ------------------------- */
+.note-text::after{
+    content:"";position:absolute;left:0;right:0;top:50%;height:2px;
+    background:currentColor;opacity:.45;
+    transform:scaleX(0);transform-origin:left;
+    transition:transform .25s ease;
+}
+.card.done .note-text::after{transform:scaleX(1);}
+
+/* --------------------------- edit pane ------------------------ */
+.card-edit{
+    position:absolute;left:50%;top:0;transform:translate(-50%,0);
+    width:calc(100% - 100px);height:100%;
+    display:flex;align-items:center;justify-content:center;gap:.6rem;
+    transition:opacity .25s ease,transform .25s ease;
+    opacity:0;pointer-events:none;
+}
+.card-edit input[type=text]{
+    flex:1 1 auto;border:2px solid var(--green);border-radius:var(--card-radius);
+    padding:.35rem .6rem;font:inherit;min-width:0;
+}
+.card-edit input[type=number]{
+    width:5rem;text-align:center;border:2px solid var(--green);
+    border-radius:var(--card-radius);padding:.35rem .45rem;font:inherit;
+}
+
+/* --------------------------- edit mode ------------------------ */
+.card.editing .note-text{
+    transform:translateX(-150%);opacity:.6;
+    transition:transform .25s ease,opacity .25s ease;
+}
+.card.editing .actions{opacity:0}
+.card.editing .card-edit{
+    opacity:1;pointer-events:auto;
+}
+
+/* avoid strike when editing */
+.card.editing.done .note-text::after{display:none}
+
+/* optional inline add-form (legacy) ---------------------------- */
+form.add-product{display:flex;align-items:center;gap:.7rem}
+form.add-product input{border:2px solid var(--green);border-radius:var(--card-radius);
+    padding:.4rem .6rem;font:inherit}
+
+.card-confirm{
+    position:absolute;left:50%;top:0;transform:translate(-50%,0);
+    width:calc(100% - 100px);height:100%;
+    display:flex;align-items:center;justify-content:center;
+    gap:.8rem;text-align:center;font-size:.95rem;
+    transition:opacity .25s ease,transform .25s ease;
+    opacity:0;pointer-events:none;
+}
+
+.card.confirming .note-text,
+.card.confirming .actions       { opacity:0;transform:translateX(-115%); }
+.card.confirming .card-edit     { opacity:0;pointer-events:none; }
+.card.confirming .card-confirm  { opacity:1;pointer-events:auto; }
+
+.confirm-button {
+    width: 15%;
+    height: 35px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+.primary {
+    background-color: rgb(255, 114, 109);
+    color: white;
+}
+.primary:hover {
+    background-color: rgb(255, 73, 66);
+}
+.secondary {
+    background-color: #ddd;
+}
+.secondary:hover {
+    background-color: rgb(197, 197, 197);
+}
