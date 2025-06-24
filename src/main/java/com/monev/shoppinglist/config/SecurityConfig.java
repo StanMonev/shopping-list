@@ -11,13 +11,27 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain web(HttpSecurity http) throws Exception {
+
         http
-                .csrf(AbstractHttpConfigurer::disable)                 // REST: no CSRF token
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index.html").permitAll() // allow a simple UI, if any
+                        .requestMatchers("/css/**", "/javascript/**").permitAll()
+                        .requestMatchers("/login", "/login/**", "/error").permitAll()
                         .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults());        // turn on HTTP Basic
+
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/", true))
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout"))
+
+                // allow HTTP Basic for Postman
+                .httpBasic(Customizer.withDefaults())
+
+                // no CSRF for simplicity
+                .csrf(AbstractHttpConfigurer::disable);
+
         return http.build();
     }
 }
+

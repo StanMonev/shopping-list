@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="stylesheet" href="/css/login.css"/>
+</head>
+<body>
+<!-- From Uiverse.io by bociKond -->
+<form class="login-form" th:action="@{/login}" method="post">
+  <div class="form-heading">Login</div>
+  <div class="input-group">
+    <label class="label" for="username">Username</label>
+    <input
+            required=""
+            placeholder="Enter username"
+            name="username"
+            id="username"
+            type="text"
+    />
+  </div>
+  <div class="input-group">
+    <label class="label" for="password">Password</label>
+    <input
+            required=""
+            placeholder="Enter password"
+            name="password"
+            id="password"
+            type="password"
+    />
+  </div>
+  <div>
+    <p th:if="${param.error}" style="margin-inline-start: 1em;color:#ef4444">Bad credentials</p>
+    <p th:if="${param.logout}" style="margin-inline-start: 1em;color:#059669">Logged out</p>
+  </div>
+  <button class="submit" type="submit">Log In</button>
+</form>
+</body>
+</html>

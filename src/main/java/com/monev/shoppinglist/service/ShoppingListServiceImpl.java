@@ -3,6 +3,7 @@ package com.monev.shoppinglist.service;
 import com.monev.shoppinglist.model.Product;
 import com.monev.shoppinglist.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ public class ShoppingListServiceImpl implements ShoppingListService {
     @Override
     @Transactional(readOnly = true)
     public List<Product> getProducts() {
-        return repo.findAll();
+        return repo.findAll(Sort.by("id"));
     }
 
     @Override
