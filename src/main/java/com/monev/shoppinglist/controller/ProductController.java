@@ -2,6 +2,7 @@ package com.monev.shoppinglist.controller;
 
 import com.monev.shoppinglist.model.Product;
 import com.monev.shoppinglist.service.ShoppingListService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,4 +64,8 @@ public class ProductController {
         service.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    void handleNotFound() {}
 }

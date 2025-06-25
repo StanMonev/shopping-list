@@ -1,10 +1,14 @@
 package com.monev.shoppinglist.controller;
 
 import com.monev.shoppinglist.service.ShoppingListService;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 @Controller
 @Validated
@@ -57,4 +61,8 @@ public class ViewController {
             this(null, "", 1);
         }
     }
+
+    @ExceptionHandler({EntityNotFoundException.class, NoSuchElementException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    void handleNotFound() {}
 }
