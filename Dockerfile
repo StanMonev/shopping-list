@@ -1,5 +1,5 @@
 # ---- build stage -------------------------------------------------
-FROM gradle:8.7-jdk21-alpine AS build          # full JDK + Gradle
+FROM gradle:8.7-jdk21-alpine AS build
 WORKDIR /workspace
 
 # copy everything first (wrapper, build.gradle*, sources, resources)
